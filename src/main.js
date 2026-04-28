@@ -1,4 +1,4 @@
-import { game, State } from './state.js';
+import { game, State, updateHiScore } from './state.js';
 import { createBird, updateBird, flapBird, BIRD_CONFIG } from './bird.js';
 import { createPipe, updatePipes, removeOffscreenPipes, checkPipePassed, checkCollision } from './pipe.js';
 import { clearCanvas, drawBackground, drawPipes, drawAstronaut, drawOverlay } from './renderer.js';
@@ -68,7 +68,7 @@ function gameLoop(now) {
     if (checkPipePassed(pipes, bird)) {
       game.score++;
       scoreEl.textContent = game.score;
-      if (game.score > game.hiScore) game.hiScore = game.score;
+      updateHiScore();
     }
 
     pipes = removeOffscreenPipes(pipes);
