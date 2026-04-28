@@ -2,6 +2,7 @@ import { game, State, updateHiScore } from './state.js';
 import { createBird, updateBird, flapBird, BIRD_CONFIG } from './bird.js';
 import { createPipe, updatePipes, removeOffscreenPipes, checkPipePassed, checkCollision } from './pipe.js';
 import { clearCanvas, drawBackground, drawPipes, drawAstronaut, drawOverlay } from './renderer.js';
+import { playFlap, playScore, playDead } from './audio.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -25,6 +26,7 @@ function handleFlap() {
   }
   if (game.state === State.PLAYING) {
     flapBird(bird);
+    playFlap();
   }
   if (game.state === State.DEAD) {
     resetGame();
@@ -64,11 +66,12 @@ function gameLoop(now) {
     }
 
     updatePipes(pipes, dt, game.score);
-    
+
     if (checkPipePassed(pipes, bird)) {
       game.score++;
       scoreEl.textContent = game.score;
       updateHiScore();
+      playScore();
     }
 
     pipes = removeOffscreenPipes(pipes);
@@ -76,6 +79,7 @@ function gameLoop(now) {
     if (checkCollision(pipes, bird, H)) {
       game.state = State.DEAD;
       msgEl.textContent = `Hiscore: ${game.hiScore} — klik om opnieuw te spelen`;
+      playDead();
     }
   }
 
