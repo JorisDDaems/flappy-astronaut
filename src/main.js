@@ -63,8 +63,8 @@ function gameLoop(now) {
       lastPipeTime = now;
     }
 
-    updatePipes(pipes, dt);
-
+    updatePipes(pipes, dt, game.score);
+    
     if (checkPipePassed(pipes, bird)) {
       game.score++;
       scoreEl.textContent = game.score;

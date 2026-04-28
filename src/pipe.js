@@ -1,5 +1,6 @@
 export const PIPE_CONFIG = {
-  speed: 2.4,
+  baseSpeed: 2.4,
+  maxSpeed: 5.5,
   gap: 140,
   interval: 1600,
   width: 52,
@@ -7,6 +8,11 @@ export const PIPE_CONFIG = {
   capWidth: 58,
   minGapY: 60,
 };
+
+export function getPipeSpeed(score) {
+  const speed = PIPE_CONFIG.baseSpeed + score * 0.08;
+  return Math.min(speed, PIPE_CONFIG.maxSpeed);
+}
 
 export function createPipe(canvasHeight) {
   const maxGapY = canvasHeight - PIPE_CONFIG.gap - 60;
@@ -18,9 +24,10 @@ export function createPipe(canvasHeight) {
   };
 }
 
-export function updatePipes(pipes, dt) {
+export function updatePipes(pipes, dt, score) {
+  const speed = getPipeSpeed(score);
   for (const pipe of pipes) {
-    pipe.x -= PIPE_CONFIG.speed * dt;
+    pipe.x -= speed * dt;
   }
 }
 
